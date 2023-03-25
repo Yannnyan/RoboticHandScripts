@@ -4,7 +4,7 @@ def cos(angle):
     return math.cos(math.radians(angle))
 
 def sin(angle):
-    return math.cos(math.radians(angle))
+    return math.sin(math.radians(angle))
 
 def rotation_matrices(angle_x, angle_y, angle_z):
     x_rotation_matrix = np.array([1,0,0,
@@ -25,10 +25,10 @@ def rotation_matrices(angle_x, angle_y, angle_z):
 
 
 def rotate_vector(vector, angle_x, angle_y, angle_z):
-    matrices = rotation_matrices(angle_x=angle_x, angle_y=angle_y, angle_z=angle_z)
-    new_vector = vector @ matrices[0] # rotate by x
-    new_vector = new_vector @ matrices[1] # rotate by y
-    new_vector = new_vector @ matrices[2] # rotate by z
+    x_rotation_matrix, y_rotation_matrix, z_rotation_matrix = rotation_matrices(angle_x=angle_x, angle_y=angle_y, angle_z=angle_z)
+    new_vector = vector @ x_rotation_matrix # rotate by x
+    new_vector = new_vector @ y_rotation_matrix # rotate by y
+    new_vector = new_vector @ z_rotation_matrix # rotate by z
     return new_vector
 
 
