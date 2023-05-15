@@ -24,7 +24,7 @@ class Loader:
         wrist_det_np = dataframe[['Output'	,'w_p_x',	'w_p_y',	'w_p_z',	'w_r_x'	,'w_r_y',	'w_r_z']].to_numpy()
         nparr = dataframe.drop(columns=['Output'	,'w_p_x',	'w_p_y',	'w_p_z',	'w_r_x'	,'w_r_y',	'w_r_z'])
         del nparr[nparr.columns[-1]]
-        print(nparr.iloc[0,-1])
+        # print(nparr.iloc[0,-1])
         nparr = nparr.to_numpy()
         return nparr[1:,:], wrist_det_np[1:,:]
     
