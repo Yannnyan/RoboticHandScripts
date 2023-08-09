@@ -1,0 +1,1 @@
+uvicorn core.server:app --reload
