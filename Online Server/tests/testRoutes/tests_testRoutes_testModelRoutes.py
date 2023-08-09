@@ -5,19 +5,23 @@ import requests
 import re
 import json
 
+
+
 class RoutesTesting(unittest.TestCase):
     def setUp(self) -> None:
-        self.URL = "http://localhost:8000/convexmodel"
+        self.ConvexURL = "http://localhost:8000/convexmodel"
+        self.VoxelURL = "http://localhost:8000/voxelmodel"
         self.cup_coma_str = re.sub(r"\s+", ',', cup_str)
+        self.points_dict = {"message": self.cup_coma_str, "wrist": ("1,2,3," * 2).removesuffix(",")}
         # self.str_save_points = json.dumps().encode()
 
     def testPostConvexModel(self):
-        points_dict = {"message": self.cup_coma_str, "wrist": ("1,2,3," * 2).removesuffix(",")}
-        response = requests.post(self.URL, data=json.dumps(points_dict).encode())
-        print(response.text)
+        response = requests.post(self.ConvexURL, data=json.dumps(self.points_dict).encode())
+        print("ConvexModel response: \n",response.text)
 
     def testPostVoxelModel(self):
-        pass
+        response = requests.post(self.VoxelURL, data=json.dumps(self.points_dict).encode())
+        print("VoxelModel Response: \n", response.text)
 
 
 unittest.main()

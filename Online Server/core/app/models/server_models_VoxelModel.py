@@ -6,6 +6,7 @@ from ...AI.VoxelModel.VoxelArchitecture import getModelOutput
 sys.path.append(config_Scripts[keys_scripts.voxelScripts])
 
 from pipeline import runPipelineShort
+import torch
 
 
 class VoxelModel(AI_Model):
@@ -14,7 +15,7 @@ class VoxelModel(AI_Model):
         self.model_react_pipe = [self.parsePoints, self.preprocessPoints, self.reactToProcessed]
     
     def preprocessPoints(self, points):
-        voxel_indices = runPipelineShort(points, config_Data[keys_data.pcdDir], config_Data[keys_data.voxelsDir])
+        voxel_indices = runPipelineShort(points[3:,:], config_Data[keys_data.pcdDir], config_Data[keys_data.voxelsDir])
 
         cube = np.zeros(config_VoxelModel[keys_voxel.cubeShape])
 
@@ -29,7 +30,8 @@ class VoxelModel(AI_Model):
     def reactToProcessed(self, processed_points):
         cube = processed_points
         cube = np.expand_dims(np.expand_dims(cube, axis=0),axis=0)
-        return getModelOutput(cube=cube)
+        torch_pred = getModelOutput(cube=cube)
+        return torch.detach(torch_pred).numpy()
     
     def ModelReaction(self, msg):
         x = msg
