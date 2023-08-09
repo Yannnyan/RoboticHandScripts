@@ -17,14 +17,19 @@ class TestConvexModel(unittest.TestCase):
     
     def test_preprocess_points(self):
         processed_points = convexModel.preprocessPoints(convexModel.parsePoints(self.cup_points))
-        self.assertEquals(type(processed_points), np.ndarray)
-        self.assertEquals(processed_points.shape, (2002,3))
+        self.assertEqual(type(processed_points), np.ndarray)
+        self.assertEqual(processed_points.shape, (2002,3))
 
     def test_parse_points(self):
         points = convexModel.parsePoints(self.str_save_points)
         self.assertEqual(type(points), np.ndarray)
         self.assertEqual(points.shape, (102,3))
         self.assertTrue(np.array_equal(points[:2,:], np.array([[1,2,3],[1,2,3]])))
+
+        points2 = convexModel.parsePoints(self.cup_points)
+        self.assertEqual(type(points2), np.ndarray)
+        # self.assertEqual(points.shape, (102,3))
+        self.assertTrue(np.array_equal(points2[:2,:], np.array([[1,2,3],[1,2,3]])))
 
     def test_reactToProcessed(self):
         prediction = convexModel.ModelReaction(self.cup_points)

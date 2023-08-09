@@ -24,7 +24,7 @@ keys_scripts = _keys_Scripts()
 keys_data = _keys_Data()
 
 config_ConvexModel = {
-    keys_convex.toConv: False
+    keys_convex.toConv: True
     ,keys_convex.convModelPath: r"C:\Users\Yan\Desktop\Robotic hand\Scripts\Online Server\core\AI\pytorch_models\ConvexModelsVersions\V_9.8.23\convhull_trained_model.pt"
     ,keys_convex.maxPoints: 2000
 

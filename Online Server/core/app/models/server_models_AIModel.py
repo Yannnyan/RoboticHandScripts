@@ -10,12 +10,12 @@ class AI_Model:
     def preprocessPoints(self, points) -> np.ndarray:
         pass
 
-    def parsePoints(self, msg) -> np.ndarray:
-        message = literal_eval(msg.decode("utf-8"))
+    def parsePoints(self, message) -> np.ndarray:
+        # message = literal_eval(message.decode("utf-8"))
         
-        arr = np.fromstring(str(message["message"]).strip("[]"), dtype=np.float64,sep=",")
+        arr = np.fromstring(str(message.message).strip("[]"), dtype=np.float64,sep=",")
         
-        wrist_data = np.fromstring(str(message["wrist"]).strip("[]"), dtype=np.float64,sep=",")
+        wrist_data = np.fromstring(str(message.wrist).strip("[]"), dtype=np.float64,sep=",")
 
         all_points = np.concatenate([wrist_data.reshape(-1,3), arr.reshape(-1,3)], axis=0)
 

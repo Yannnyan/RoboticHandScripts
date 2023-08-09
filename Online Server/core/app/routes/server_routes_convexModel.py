@@ -1,6 +1,8 @@
 
 from fastapi import Request
 from ..controllers.server_controller_convexModel import convexController
+from ..models.server_models_Data import Data
+
 
 def initRoutes(app):
     @app.get("/convexmodel")
@@ -8,9 +10,11 @@ def initRoutes(app):
         pass
 
     @app.post("/convexmodel")
-    async def root(message: Request):
-        body = await message.body()
-        return {"message": convexController.HandleData(body)}
+    async def root(message: Data):
+        # print(message)
+        body = message
+        prediction = convexController.HandleData(body)
+        return {"message": prediction}
 
 
 

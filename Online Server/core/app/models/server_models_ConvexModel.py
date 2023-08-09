@@ -16,9 +16,13 @@ class ConvexModel(AI_Model):
     
     def preprocessPoints(self, points):
         if config_ConvexModel[keys_convex.toConv]:
-            convex = ConvexHull(points)
+            convex = ConvexHull(points[3:,:])
             
-            return changer.changePoints(convex.points, config_ConvexModel[keys_convex.maxPoints])
+            fixed_amount_points = changer.changePoints(convex.points, config_ConvexModel[keys_convex.maxPoints])
+
+            wrist_and_mesh = np.concatenate([points[:2,:], fixed_amount_points])
+
+            return wrist_and_mesh
         
         else:
             pcd_filename = make_one_pcd_withConvex(points[3:,:], config_Data[keys_data.pcdDir])
@@ -35,7 +39,7 @@ class ConvexModel(AI_Model):
         return super().parsePoints(msg)
     
     def reactToProcessed(self, processed_points):
-        return getModelOutput(processed_points)
+        return getModelOutput(processed_points).detach().numpy()
     
     def ModelReaction(self, msg):
         x = msg
