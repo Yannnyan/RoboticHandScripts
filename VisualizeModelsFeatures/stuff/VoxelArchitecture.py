@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from torch import nn
-from core.config.config import *
+from ...config.config import *
 
 
 class CNN_Block(nn.Module):

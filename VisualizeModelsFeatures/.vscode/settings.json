@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "C:/Users/Yan/Desktop/Robotic hand/Scripts/ConvexHull"
+    , "C:/Users/Yan/Desktop/Robotic hand/Scripts/Voxelization"
+    ,"C:/Users/Yan/Desktop/Robotic hand/Scripts/Online Server/core"
+    ,"C:\\Users\\Yan\\Desktop\\Robotic hand\\Scripts\\Online Server\\core\\AI"
+    ]
+}

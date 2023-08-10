@@ -28,7 +28,7 @@ def runPipelineShort(points, pcd_dir, voxel_dir):
 
     voxel_path = pcd_path.removesuffix(".pcd") + ".ply"
 
-    voxel_grid = getVoxelFromPCD(path=pcd_path)
+    voxel_grid = getVoxelFromPCD(path=pcd_dir + pcd_path)
 
     voxel_indices = np.array([voxel.grid_index for voxel in voxel_grid.get_voxels()])
 
