@@ -85,6 +85,13 @@ channel_4 = 16
 class CNN(nn.Module):
     def __init__(self):
         super().__init__()
+        # self.block1 = CNN_Block(1,channel_0,(5,5,5), (2,2,2), 2, conv_twice=False),
+        # self.block2 = CNN_Block(channel_0,channel_1,(3,3,3), (2,2,2), 2, conv_twice=False),
+        # self.block3 = CNN_Block(channel_1,channel_2,(3,3,3), (2,2,2), 1, conv_twice=False),
+        # self.block4 = CNN_Block(channel_2,channel_3,(3,3,3), (2,2,2), 1, conv_twice=False),
+        # self.block5 = CNN_Block(channel_3,channel_4,(3,3,3), (2,2,2), 1, conv_twice=False),
+
+        # self.block6 = Head_Block([432,64,54])
         self.hidden_layers = nn.Sequential(
           CNN_Block(1,channel_0,(5,5,5), (2,2,2), 2, conv_twice=False),
           CNN_Block(channel_0,channel_1,(3,3,3), (2,2,2), 2, conv_twice=False),
@@ -97,13 +104,20 @@ class CNN(nn.Module):
 
     def forward(self, x):
         # print(x.shape)
+        # self.out1 = self.block1(x)
+        # self.out2 = self.block2(self.out1)
+        # self.out3 = self.block3(self.out2)
+        # self.out4 = self.block4(self.out3)
+        # self.out5 = self.block5(self.out4)
+        # self.out6 = self.block6(self.out5)
         x = self.hidden_layers(x)
-        return x
+        return self.out6
 
 
 # # Load
 PATH = config_VoxelModel[keys_voxel.voxelModelPath]
 model = CNN()
+print(torch.load(PATH,map_location=torch.device('cpu')))
 model.load_state_dict(torch.load(PATH,map_location=torch.device('cpu')))
 model.eval()
 
