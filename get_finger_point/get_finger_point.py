@@ -1,5 +1,7 @@
 import numpy as np
 import math
+from calculate_angles import *
+from config import *
 
 def Rx(a):
     sin_a, cos_a = math.sin(a), math.cos(a)
@@ -26,21 +28,7 @@ def Rz(a):
     ])
 
 def R(a, b, c):
-    return np.round(Rz(math.radians(a)) @ Ry(math.radians(b)) @ Rx(math.radians(c)), decimals=10)
-
-finger_to_distances = {"thumb":  [0.025718, 0.025138, 0.032887, 0.034182],
-                       "index":  [0.100255, 0.038364, 0.024583, 0       ],
-                       "middle": [0.096798, 0.043421, 0.027867, 0       ],
-                       "ring":   [0.091677, 0.039445, 0.026879, 0       ],
-                       "pinky":  [0.042660, 0.046176, 0.031074, 0.020545],
-                       "test3":  [1, 1, 1, 0],
-                       "test4":  [1, 1, 1, 1]}
-
-finger_to_inits = {"thumb":  [-134.20247233590717, 78.45535380354426, -8.248710073793161],
-                   "index":  [161.6191695699214, 60.56787240129933, 8.913981287221988],
-                   "middle": [170.1049499379885, 48.48982791314379, 6.539613189147546],
-                   "ring":   [-178.93383120555032, 38.87611924302098, -0.829998668591034],
-                   "pinky":  [-160.3063691606456, 20.67568305317016, -18.378102639715692]}
+    return Rz(math.radians(a)) @ Ry(math.radians(b)) @ Rx(math.radians(c))
 
 def get_finger_point(wrist_rotation, joint_rotations, finger):
 
@@ -65,7 +53,7 @@ def get_finger_point(wrist_rotation, joint_rotations, finger):
 
     if l4 == 0:
         p3 = p1_effect + p2_effect + p3_effect
-        return np.round(p3, decimals=8)
+        return p3
     
     a3, b3, c3 = joint_rotations[2]
     R3 = R(a3, b3, c3)
@@ -75,13 +63,13 @@ def get_finger_point(wrist_rotation, joint_rotations, finger):
     
     p4 = p1_effect + p2_effect + p3_effect + p4_effect
 
-    return np.round(p4, decimals=8)
+    return p4
 
 def get_finger_points(wrist_rotation, joint_rotations, finger):
 
     points = []
 
-    a0init, b0init, c0init = finger_to_inits[finger]
+    a0init, b0init, c0init = calculate_init(finger_to_inits[finger])
     a0wrist, b0wrist, c0wrist = wrist_rotation
     a1, b1, c1 = joint_rotations[0]
     a2, b2, c2 = joint_rotations[1]
@@ -89,8 +77,8 @@ def get_finger_points(wrist_rotation, joint_rotations, finger):
     l1, l2, l3, l4 = finger_to_distances[finger]
 
     Rinit = R(a0init, b0init, c0init)
-    Rwrist = R(-a0wrist, -b0wrist, -c0wrist)
-    R0 = Rwrist @ Rinit
+    Rwrist = R(a0wrist, b0wrist, c0wrist)
+    R0 = Rinit
     R1 = R(a1, b1, c1)
     R2 = R(a2, b2, c2)
 
@@ -124,12 +112,3 @@ def get_finger_points(wrist_rotation, joint_rotations, finger):
     points.append(p4)
 
     return points
-
-if __name__ == "__main__":
-    wrist_rotation = np.array([310.3064, 225.4346, 56.68254])
-    joint_rotations = np.array([
-        [18.92999, 234.0272, 55.00048],
-        [50.73119, 250.5061, 39.83798],
-        [39.08791, 251.2982, 25.42211]
-    ])
-    print(get_finger_point(wrist_rotation, joint_rotations, "thumb"))
